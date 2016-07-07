@@ -1,3 +1,7 @@
+import time
+
+from Node import *
+
 class Graph:
 
     def __init__(self):
@@ -9,19 +13,21 @@ class Graph:
         return time.mktime(time.strptime(timestamp, pattern))
 
     def print_graph(self):
-      for actor,node in graph.iteritems():
-          print actor, node, node.target_degree()
+      for actor,node in self.graph.items():
+          print(actor, node, node.target_degree())
       print
 
-    def set_actor_in_graph(actor, created_time, target):
-        if actor not in graph:
+    def set_actor_in_graph(self, actor, created_time, target):
+        created_time_epoch = self.timestamp_to_epoch(created_time)
+        
+        if actor not in self.graph:
             # new actor
-            graph[actor] = Node(created_time, target)
+            self.graph[actor] = Node(created_time_epoch, target)
         else:
-            graph[actor].append_target(created_time, target)
+            self.graph[actor].append_target(created_time_epoch, target)
 
     # returns a float - the median
-    def median(list):
+    def median(self, list):
         sList = sorted(list)
         lLen = len(list)
         index = (lLen - 1) // 2 # floor division
@@ -31,9 +37,9 @@ class Graph:
         else:
             return (sList[index] + sList[index + 1]) / 2.0
 
-    def calculate_median():
+    def calculate_median(self):
         target_degrees = []
-        for actor,node in graph.iteritems():
+        for actor,node in self.graph.items():
             target_degrees.append(node.target_degree())
 
-        return median(target_degrees)
+        return self.median(target_degrees)
