@@ -17,6 +17,21 @@ class Node:
         target = Target(target, created_time)
         self.targets.append(target)
 
+    def is_target_in_60s_wndw(self, target, ts):
+        if ts - target.created_time >= 60:
+            return False
+        else:
+            return True
+
+    def remove_stale_targets(self, ts):
+        self.targets = [target for target in self.targets if self.is_target_in_60s_wndw(target, ts)]
+
+    def targets_exist(self):
+        if len(self.targets) != 0:
+            return True
+        else:
+            return False
+
     def __str__(self):
         targets = ""
         for target in self.targets:
