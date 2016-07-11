@@ -99,6 +99,10 @@ class Graph:
             self.intake_payment(actor, created_time_epoch, target)
 
         else: # already initialized
+            # Every new line should be added to the graph with only one exception: 
+            #   if its timestamp is less than all other timestamps that have been processed AND 
+            #   the difference between that new line's timestamp and the maximum timestamp processed prior to the 
+            #   new line's arrival is more than 60 seconds.
             if self.is_in_wndw_of_max_ts(created_time_epoch) or self.is_gte_of_min_ts(created_time_epoch):
                 if self.is_not_in_wndw_of_min_ts(created_time_epoch):
                     # evict actors outside of 60s window
