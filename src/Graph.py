@@ -8,9 +8,6 @@ class Graph:
     def __init__(self):
         self.graph = {}
 
-        # keep track of both minimum and maximum timestamp
-        self.min_ts = -1.0
-        self.max_ts = -1.0
         self.tsDS = TimeStamps()
 
     def timestamp_to_epoch(self, timestamp):
@@ -37,6 +34,9 @@ class Graph:
         else:
             return False
 
+    def is_gte_of_min_ts(self, timestamp):
+        return timestamp >= self.get_min_ts()
+
     def print_graph(self):
       for actor,node in self.graph.items():
           print(actor, node, node.target_degree())
@@ -51,8 +51,6 @@ class Graph:
         
 
     def evict_stale_actors(self, ts):
-#        for actor,node in self.graph.items():
-#            node.remove_stale_targets(ts)
         self.tsDS.remove_stale_targets(ts)
         
         # if node has no targets, need to remove it
@@ -63,13 +61,6 @@ class Graph:
         del graph_copy
 
     def get_min_ts(self):
-#        min_ts = ts
-
-#        for actor,node in self.graph.items():
-#            for target in node.targets:
-#                if target.created_time < min_ts:
-#                    min_ts = target.created_time
-
         return self.tsDS.tsL[0] # since timestamps are ordered, min_ts should be
                                 # the first entry
     def get_max_ts(self):
@@ -82,7 +73,7 @@ class Graph:
     # returns a float - the median
     def median(self, list):
         sList = sorted(list)
-        print(sList)
+#        print(sList)
         lLen = len(list)
         index = (lLen - 1) // 2 # floor division
 
@@ -104,28 +95,14 @@ class Graph:
      
         # initialize minimum timestamp if not initialized yet
         if self.is_ts_unset():
-#            self.min_ts = created_time_epoch
-#            self.max_ts = created_time_epoch
             
             self.intake_payment(actor, created_time_epoch, target)
 
         else: # already initialized
-            if self.is_in_wndw_of_max_ts(created_time_epoch):
+            if self.is_in_wndw_of_max_ts(created_time_epoch) or self.is_gte_of_min_ts(created_time_epoch):
                 if self.is_not_in_wndw_of_min_ts(created_time_epoch):
                     # evict actors outside of 60s window
                     self.evict_stale_actors(created_time_epoch)
-
-                    # need to update min_ts
-#                    self.min_ts = self.find_new_min_ts(created_time_epoch)
-#                    print("min_ts: "+str(self.get_min_ts()))
-#                else:
-                    # update min_ts if necessary
-#                    if created_time_epoch < self.min_ts:
-#                        self.min_ts = created_time_epoch
-
-                # update max_ts if necessary
-#                if created_time_epoch > self.max_ts:
-#                    self.max_ts = created_time_epoch
 
                 # only if we are within window of max ts do we
                 # intake the payment

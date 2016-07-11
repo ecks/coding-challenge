@@ -27,10 +27,10 @@ class TimeStamps:
 #          print("stale_ts: "+str(stale_ts))
           stale_targetsAndLists = self.timestamps[stale_ts]
           for stale_target, targetsList in stale_targetsAndLists:
-              targets = "["
-              for target in targetsList:
-                targets = targets+str(target)+" "
-              targets = targets + "]"
+#              targets = "["
+#              for target in targetsList:
+#                targets = targets+str(target)+" "
+#              targets = targets + "]"
 #              print(targets)
 #              print(stale_target)
               targetsList.remove(stale_target)

@@ -12,6 +12,7 @@ if __name__ == "__main__":
 
         graph = Graph()
 
+#        i = 1
         for line in in_file:
             json_line = json.loads(line)
 
@@ -25,8 +26,10 @@ if __name__ == "__main__":
             calc_median = graph.calculate_median()
             calc_median_fmt = "{0:.2f}".format(calc_median)
 
-            print(calc_median_fmt)
+#            print("ln: "+str(i))
+#            print(calc_median_fmt)
 
-            graph.print_graph()
+#            graph.print_graph()
 
             out_file.write(calc_median_fmt+'\n')
+#            i = i + 1

@@ -37,8 +37,8 @@ class Node:
                     tForTs = self.tsDS.timestamps[old_created_time]
                     tForTs.remove((Target, self.targets))
                     if len(tForTs) == 0: # if there are no other targets for that ts...
-                        del self.tsDs.timestamps[old_created_time]
-                        self.tsL.remove(old_created_time)
+                        del self.tsDS.timestamps[old_created_time]
+                        self.tsDS.tsL.remove(old_created_time)
 
 
                     # add new created time
@@ -57,16 +57,6 @@ class Node:
         else: # Target has already been added, still need to update timestamp
             self.find_target_update_ts(target, created_time)
 
-    def is_target_in_60s_wndw(self, target, ts):
-        if ts - target.created_time >= 60:
-            return False
-        else:
-            return True
-
-#    def remove_stale_targets(self, ts):
-#        self.targets = [target for target in self.targets if self.is_target_in_60s_wndw(target, ts)]
-#       self.tsDS.find_stale_targets(ts, self.targets)
-
     def targets_exist(self):
         if len(self.targets) != 0:
             return True
@@ -81,5 +71,3 @@ class Node:
 
     def target_degree(self):
         return len(self.targets)
-
-
